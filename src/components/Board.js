@@ -6,7 +6,10 @@ import Square from "./Square";
 // } Wurde nach untern verschoben
 
 function Board() {
-  const [state, setState] = React.useState({ squares: Array(9).fill(null) });
+  const [state, setState] = React.useState({
+    squares: Array(9).fill(null),
+    xIsNext: true
+  });
 
   // function handleClick(index) {
   //   alert(index);
@@ -15,8 +18,8 @@ function Board() {
   function handleClick(index) {
     // Immutability
     const squaresCopy = state.squares.slice();
-    squaresCopy[index] = "X";
-    setState({ squares: squaresCopy });
+    squaresCopy[index] = state.xIsNext ? "X" : "0";
+    setState({ squares: squaresCopy, xIsNext: !state.xIsNext });
 
     // mittels sclice wird ein Array kopiert anstatt es zu bennenen.
   }

@@ -1,36 +1,46 @@
 import React from "react";
 import Square from "./Square";
-
-// function renderSquare(index) {
-//   return <Square value={index} />;
-// } Wurde nach untern verschoben
+import calculateWinner from "../api/calculateWinner";
 
 function Board() {
   const [state, setState] = React.useState({
     squares: Array(9).fill(null),
     xIsNext: true
   });
-  // function handleClick(index) {
-  //   alert(index);
-  // }
+
+  const winner = calculateWinner(state.squares);
+  let status;
+  if (winner) {
+    status = `Winner: ${winner}`;
+  } else {
+    status = `Next player: ${state.xIsNext ? "X" : "O"}`;
+  }
+
   function handleClick(index) {
-    // Immutability
+    if (state.squares[index]) {
+      return;
+    }
+    if (winner) {
+      return;
+    }
+
+    //Alternativ
+    // function handleClick(index) {
+    //   if (state.squares[index] || calculateWinner(state.squares)) {
+    //     return;
+    //   }
+
     const squaresCopy = state.squares.slice();
     squaresCopy[index] = state.xIsNext ? "X" : "0";
     setState({ squares: squaresCopy, xIsNext: !state.xIsNext });
-    // mittels sclice wird ein Array kopiert anstatt es zu bennenen.
   }
+
+  // Der Stopp lässt sich auch durch ein disable der funktion unten anführe
   function renderSquare(index) {
     return (
       <Square value={state.squares[index]} onClick={() => handleClick(index)} />
     );
   }
-  // state.xIsNext
-
-  // const status = state.xIsNext ? "Next Player: X" : "Next Player: O";
-
-  //Optimale Lösung :
-  const status = `Next player: ${state.xIsNext ? "X" : "O"}`;
 
   //Lenas Ansatz
   // function getNextPlayer(xIsNext) {
